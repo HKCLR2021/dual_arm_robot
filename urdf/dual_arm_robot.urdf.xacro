@@ -51,7 +51,8 @@
     <xacro:fold_elevator_ros2_control 
       name="fold_elevator" 
       sim="${fold_elevator_sim}" 
-      can_interface="${fold_elevator_can_interface}" />
+      can_interface="${fold_elevator_can_interface}" 
+      desired_config_update_rate="1.0" />
     
     <xacro:dual_arm name="dual_arm" parent="link4">
       <origin xyz="-0.0064 0 0.26" rpy="0 0 ${M_PI}"/>
