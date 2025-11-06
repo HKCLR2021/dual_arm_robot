@@ -1,0 +1,51 @@
+sensors:  
+  - left_camera_pc
+  # - left_camera_depth
+  - right_camera_pc
+  # - right_camera_depth
+
+left_camera_pc:
+  sensor_plugin: occupancy_map_monitor/PointCloudOctomapUpdater
+  point_cloud_topic: /left_camera/depth/color/points
+  max_range: 2.0
+  point_subsample: 1
+  padding_offset: 0.2
+  padding_scale: 2.0
+  max_update_rate: 1.0
+  filtered_cloud_topic: filtered_left_pc
+
+left_camera_depth:
+  sensor_plugin: occupancy_map_monitor/DepthImageOctomapUpdater 
+  image_topic: /left_camera/aligned_depth_to_color/image_raw
+  queue_size: 5                             
+  near_clipping_plane_distance: 0.02       
+  far_clipping_plane_distance: 2.5          
+  shadow_threshold: 0.2                      # minimum brightness of the shadow map below an entity for its dynamic shadow to be visible
+  padding_offset: 0.03                       # size of the padding (in cm).
+  padding_scale: 4.0                         # scale of the padding
+  max_update_rate: 1.0                       # octomap representation will be updated at rate less than or equal to this value
+  filtered_cloud_topic: filtered_left_depth  # topic on which the filtered cloud will be published (mainly for debugging)
+  # ns: realsense                            # namespace
+
+right_camera_pc:
+  sensor_plugin: occupancy_map_monitor/PointCloudOctomapUpdater
+  point_cloud_topic: /right_camera/depth/color/points
+  max_range: 2.0
+  point_subsample: 1
+  padding_offset: 0.2
+  padding_scale: 2.0
+  max_update_rate: 1.0
+  filtered_cloud_topic: filtered_right_pc
+
+right_camera_depth:
+  sensor_plugin: occupancy_map_monitor/DepthImageOctomapUpdater 
+  image_topic: /right_camera/aligned_depth_to_color/image_raw
+  queue_size: 5                             
+  near_clipping_plane_distance: 0.02       
+  far_clipping_plane_distance: 2.5          
+  shadow_threshold: 0.2                      # minimum brightness of the shadow map below an entity for its dynamic shadow to be visible
+  padding_offset: 0.03                       # size of the padding (in cm).
+  padding_scale: 4.0                         # scale of the padding
+  max_update_rate: 1.0                       # octomap representation will be updated at rate less than or equal to this value
+  filtered_cloud_topic: filtered_right_depth # topic on which the filtered cloud will be published (mainly for debugging)
+  # ns: realsense                            # namespace

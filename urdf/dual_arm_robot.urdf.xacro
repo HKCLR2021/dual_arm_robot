@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="dual_arm_robot">
+  <xacro:macro name="dual_arm_robot" params="
+      name 
+      parent 
+      *origin 
+      left_arm_sim
+      left_arm_can_interface
+      right_arm_sim
+      right_arm_can_interface
+      fold_elevator_sim
+      fold_elevator_can_interface">
+
+    <xacro:property name="M_PI" value="3.14159265359" />
+    <xacro:property name="M_PI_2" value="1.57079632679" />
+
+    <xacro:include filename="$(find dual_arm_robot)/robot_model/chassis.urdf.xacro" />
+
+    <xacro:include filename="$(find fold_elevator_description)/urdf/fold_elevator.urdf.xacro" />
+    <xacro:include filename="$(find fold_elevator_configure)/config/fold_elevator.ros2_control.xacro" />
+
+    <xacro:include filename="$(find dual_arm_description)/urdf/dual_arm.urdf.xacro" />
+    <xacro:include filename="$(find dual_arm_configure)/config/dual_arm.ros2_control.xacro" />
+
+    <xacro:include filename="$(find dual_arm_robot)/robot_model/left_eef.urdf.xacro" />
+    <xacro:include filename="$(find dual_arm_robot)/robot_model/right_eef.urdf.xacro" />
+
+    <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
+
+    <xacro:arg name="use_nominal_extrinsics" default="false"/>
+
+    <xacro:property name="left_eef_name" default="left_eef"/>
+    <xacro:property name="right_eef_name" default="right_eef"/>
+
+    <joint name="${name}_base_joint" type="fixed">
+      <xacro:insert_block name="origin" />
+      <parent link="${parent}" />
+      <child link="base_link" />
+    </joint>
+
+    <link name="base_link"/>
+
+    <xacro:chassis name="chassis" parent="base_link">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:chassis>
+
+    <xacro:fold_elevator name="fold_elevator" parent="chassis_link">
+      <origin xyz="-0.22 -0.052 0.0888917" rpy="0 0 0"/>
+    </xacro:fold_elevator>
+
+    <xacro:fold_elevator_ros2_control 
+      name="fold_elevator" 
+      sim="${fold_elevator_sim}" 
+      can_interface="${fold_elevator_can_interface}" />
+    
+    <xacro:dual_arm name="dual_arm" parent="link4">
+      <origin xyz="-0.0064 0 0.26" rpy="0 0 ${M_PI}"/>
+    </xacro:dual_arm>
+
+    <xacro:dual_arm_ros2_control 
+      sim_left="${left_arm_sim}" 
+      can_interface_left="${left_arm_can_interface}"
+      sim_right="${right_arm_sim}" 
+      can_interface_right="${right_arm_can_interface}"
+      namespace="upper_orin" />
+
+    <xacro:left_eef name="${left_eef_name}" parent="link7_left">
+      <origin xyz="0 0.0335 0" rpy="0 0 0"/>
+    </xacro:left_eef>
+
+    <xacro:sensor_d435 
+      parent="${left_eef_name}_camera_base_link" 
+      name="left_camera" 
+      use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:sensor_d435>
+
+    <xacro:right_eef name="${right_eef_name}" parent="link7_right">
+      <origin xyz="0 0.0335 0" rpy="0 ${M_PI} 0"/>
+    </xacro:right_eef>
+
+    <xacro:sensor_d435 
+      parent="${right_eef_name}_camera_base_link" 
+      name="right_camera" 
+      use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:sensor_d435>
+
+  </xacro:macro>
+</robot>

@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="right_eef" params="name parent *origin">
+
+    <joint name="right_gripper_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${name}_coupler_link"/>
+      <xacro:insert_block name="origin" />
+      <axis xyz="0 0 1"/>
+    </joint>
+
+    <link name="${name}_coupler_link">
+      <visual>
+        <origin xyz="0 0.015 0" rpy="0 0 -${M_PI_2}" />
+        <geometry>
+          <mesh filename="package://dual_arm_robot/meshes/visual/camera_gripper_mounting_flange.STL" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="">
+          <color rgba="0.8549 0.8549 0.1607 1"/>
+        </material>
+      </visual>
+
+      <collision>
+        <origin xyz="0 0.015 0" rpy="0 0 -${M_PI_2}" />
+        <geometry>
+          <mesh filename="package://dual_arm_robot/meshes/collision/camera_gripper_mounting_flange.STL" scale="0.001 0.001 0.001"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${name}_coupler_plane_joint" type="fixed">
+      <parent link="${name}_coupler_link"/>
+      <child link="${name}_coupler_plane_link"/>
+      <origin xyz="0 0.015 0" rpy="0 0 0" />
+      <axis xyz="0 0 1"/>
+    </joint>
+
+    <link name="${name}_coupler_plane_link" />
+
+    <joint name="${name}_camera_base_joint" type="fixed">
+      <parent link="${name}_coupler_plane_link" />
+      <child link="${name}_camera_base_link" />
+      <origin xyz="0.0775 0.01 0" rpy="${M_PI_2} 0 ${M_PI_2}" />
+    </joint>
+
+    <link name="${name}_camera_base_link" />
+
+    <joint name="right_eef_joint" type="fixed">
+      <parent link="${name}_coupler_plane_link"/>
+      <child link="gripper_link"/>
+      <origin xyz="0 -0.0035 0" rpy="-${M_PI_2} 0 0" />
+      <axis xyz="0 0 1"/>
+    </joint>
+
+    <link name="gripper_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://dual_arm_robot/meshes/visual/AG-160-95-W-S_DH-Robotics.STL" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="">
+          <color rgba="0.1568 0.1568 0.1568 1"/>
+        </material>
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://dual_arm_robot/meshes/collision/AG-160-95-W-S_DH-Robotics_simplify.STL" scale="0.001 0.001 0.001"/>
+        </geometry>
+        </collision>
+    </link>
+
+    <joint name="right_tcp_joint" type="fixed">
+      <origin xyz="0 0 0.15" rpy="0 0 0" />
+      <parent link="gripper_link"/>
+      <child link="right_tcp"/>
+    </joint>
+
+    <link name="right_tcp" />
+
+  </xacro:macro>
+  
+</robot>

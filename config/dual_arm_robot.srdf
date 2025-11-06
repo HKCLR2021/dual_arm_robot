@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--This does not replace URDF, and is not an extension of URDF.
+    This is a format for representing semantic information about the robot structure.
+    A URDF file must exist for this robot as well, where the joints and the links that are referenced are defined
+-->
+<robot name="dual_arm_robot">
+    <!--GROUPS: Representation of a set of joints and links. This can be useful for specifying DOF to plan for, defining arms, end effectors, etc-->
+    <!--LINKS: When a link is specified, the parent joint of that link (if it exists) is automatically included-->
+    <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
+    <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
+    <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
+    <group name="left_arm">
+        <chain base_link="arm_base_link" tip_link="left_tcp" />
+    </group>
+    <group name="right_arm">
+        <chain base_link="arm_base_link" tip_link="right_tcp"/>
+    </group>
+    <group name="fold_elevator">
+        <!-- <joint name="virtual_joints"/> -->
+        <joint name="joint1"/>
+        <joint name="joint2"/>
+        <joint name="joint3"/>
+        <joint name="joint4"/>
+    </group>
+    <!-- <group name="left_eef">
+        <joint name="left_gripper_joint" />
+        <joint name="left_eef_camera_base_joint" />
+        <joint name="left_eef_coupler_plane_joint" />
+        <joint name="left_eef_joint" />
+        <joint name="left_tcp_joint" />
+    </group>
+    <group name="right_eef">
+        <joint name="right_gripper_joint" />
+        <joint name="right_eef_camera_base_joint" />
+        <joint name="right_eef_coupler_plane_joint" />
+        <joint name="right_eef_joint" />
+        <joint name="right_tcp_joint" />
+    </group> -->
+    <group name="whole_robot">
+        <group name="left_arm" />
+        <!-- <group name="left_eef" /> -->
+        <group name="right_arm" />
+        <!-- <group name="right_eef" /> -->
+        <group name="fold_elevator" />
+    </group>
+    <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
+    <group_state name="home_left" group="left_arm">
+        <joint name="joint1_left" value="0"/>
+        <joint name="joint2_left" value="0"/>
+        <joint name="joint3_left" value="0"/>
+        <joint name="joint4_left" value="0"/>
+        <joint name="joint5_left" value="0"/>
+        <joint name="joint6_left" value="0"/>
+        <joint name="joint7_left" value="0"/>
+    </group_state> 
+    
+    <group_state name="home_right" group="right_arm">
+        <joint name="joint1_right" value="0"/>
+        <joint name="joint2_right" value="0"/>
+        <joint name="joint3_right" value="0"/>
+        <joint name="joint4_right" value="0"/>
+        <joint name="joint5_right" value="0"/>
+        <joint name="joint6_right" value="0"/>
+        <joint name="joint7_right" value="0"/>
+    </group_state>
+
+    <group_state name="home" group="fold_elevator">
+        <joint name="joint1" value="0"/>
+        <joint name="joint2" value="0"/>
+        <joint name="joint3" value="0"/>
+        <joint name="joint4" value="0"/>
+    </group_state>
+
+    <!-- <virtual_joint name="virtual_joint" type="planar" parent_frame="map" child_link="base_footprint" />     -->
+    <!-- <passive_joint name="world_joint" /> -->
+    
+    <!-- <end_effector group="left_eef" name="left_eef_coupler_link" parent_link="link7_left" parent_group="left_arm"/> -->
+    <disable_collisions link1="left_eef_coupler_link" link2="link7_left" reason="Adjacent"/>
+    <disable_collisions link1="left_eef_coupler_link" link2="suction_cup_link" reason="Adjacent"/>=
+    <disable_collisions link1="left_eef_camera_base_link" link2="left_eef_coupler_plane_link" reason="Adjacent"/>
+    <disable_collisions link1="left_tcp" link2="suction_cup_link" reason="Adjacent"/>
+
+    <!-- <end_effector group="right_eef" name="right_eef_coupler_link" parent_link="link7_right" parent_group="right_arm"/> -->
+    <disable_collisions link1="right_eef_coupler_link" link2="link7_right" reason="Adjacent"/>
+    <disable_collisions link1="right_eef_coupler_link" link2="gripper_link" reason="Adjacent"/>
+    <disable_collisions link1="right_eef_camera_base_link" link2="right_eef_coupler_plane_link" reason="Adjacent"/>
+    <disable_collisions link1="right_tcp" link2="gripper_link" reason="Adjacent"/>
+
+    <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
+    <disable_collisions link1="arm_base_link" link2="link1_left" reason="Adjacent"/>
+    <disable_collisions link1="arm_base_link" link2="link1_right" reason="Adjacent"/>
+    <disable_collisions link1="link1_left" link2="link1_right" reason="Never"/>
+    <disable_collisions link1="link1_left" link2="link2_left" reason="Adjacent"/>
+    <disable_collisions link1="link1_left" link2="link2_right" reason="Never"/>
+    <disable_collisions link1="link1_left" link2="link3_left" reason="Never"/>
+    <disable_collisions link1="link1_left" link2="link3_right" reason="Never"/>
+    <disable_collisions link1="link1_left" link2="link4_left" reason="Never"/>
+    <disable_collisions link1="link1_left" link2="link4_right" reason="Never"/>
+    <disable_collisions link1="link1_right" link2="link2_left" reason="Never"/>
+    <disable_collisions link1="link1_right" link2="link2_right" reason="Adjacent"/>
+    <disable_collisions link1="link1_right" link2="link3_left" reason="Never"/>
+    <disable_collisions link1="link1_right" link2="link3_right" reason="Never"/>
+    <disable_collisions link1="link1_right" link2="link4_left" reason="Never"/>
+    <disable_collisions link1="link1_right" link2="link4_right" reason="Never"/>
+    <disable_collisions link1="link2_left" link2="link2_right" reason="Never"/>
+    <disable_collisions link1="link2_left" link2="link3_left" reason="Adjacent"/>
+    <disable_collisions link1="link2_left" link2="link3_right" reason="Never"/>
+    <disable_collisions link1="link2_left" link2="link4_left" reason="Never"/>
+    <disable_collisions link1="link2_left" link2="link4_right" reason="Never"/>
+    <disable_collisions link1="link2_left" link2="link5_left" reason="Never"/>
+    <disable_collisions link1="link2_left" link2="link5_right" reason="Never"/>
+    <disable_collisions link1="link2_left" link2="link6_right" reason="Never"/>
+    <disable_collisions link1="link2_left" link2="link7_right" reason="Never"/>
+    <disable_collisions link1="link2_right" link2="link3_left" reason="Never"/>
+    <disable_collisions link1="link2_right" link2="link3_right" reason="Adjacent"/>
+    <disable_collisions link1="link2_right" link2="link4_left" reason="Never"/>
+    <disable_collisions link1="link2_right" link2="link4_right" reason="Never"/>
+    <disable_collisions link1="link2_right" link2="link5_left" reason="Never"/>
+    <disable_collisions link1="link2_right" link2="link5_right" reason="Never"/>
+    <disable_collisions link1="link2_right" link2="link6_left" reason="Never"/>
+    <disable_collisions link1="link2_right" link2="link7_left" reason="Never"/>
+    <disable_collisions link1="link3_left" link2="link3_right" reason="Never"/>
+    <disable_collisions link1="link3_left" link2="link4_left" reason="Adjacent"/>
+    <disable_collisions link1="link3_left" link2="link4_right" reason="Never"/>
+    <disable_collisions link1="link3_right" link2="link4_left" reason="Never"/>
+    <disable_collisions link1="link3_right" link2="link4_right" reason="Adjacent"/>
+    <disable_collisions link1="link4_left" link2="link5_left" reason="Adjacent"/>
+    <disable_collisions link1="link4_right" link2="link5_right" reason="Adjacent"/>
+    <disable_collisions link1="link5_left" link2="link6_left" reason="Adjacent"/>
+    <disable_collisions link1="link5_right" link2="link6_right" reason="Adjacent"/>
+    <disable_collisions link1="link6_left" link2="link7_left" reason="Adjacent"/>
+    <disable_collisions link1="link6_right" link2="link7_right" reason="Adjacent"/>
+
+    <disable_collisions link1="link4" link2="arm_base_link" reason="Adjacent"/>
+
+    <disable_collisions link1="fold_elevator_base_link" link2="link1" reason="Adjacent"/>
+    <disable_collisions link1="fold_elevator_base_link" link2="link2" reason="Never"/>
+    <disable_collisions link1="link1" link2="link2" reason="Adjacent"/>
+    <disable_collisions link1="link2" link2="link3" reason="Adjacent"/>
+    <disable_collisions link1="link2" link2="link4" reason="Never"/>
+    <disable_collisions link1="link3" link2="link4" reason="Adjacent"/>
+
+    <disable_collisions link1="chassis_link" link2="fold_elevator_base_link" reason="Adjacent"/>
+
+</robot>
