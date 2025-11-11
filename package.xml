@@ -7,8 +7,8 @@
   <maintainer email="mskwok@hkclr.hk">mskwok</maintainer>
   <license>TODO: License declaration</license>
 
-  <depend>fold_elevator<depend> 
-  <depend>dual_arm<depend> 
+  <!-- <exec_depend>fold_elevator<exec_depend>  -->
+  <!-- <exec_depend>dual_arm<exec_depend>  -->
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
