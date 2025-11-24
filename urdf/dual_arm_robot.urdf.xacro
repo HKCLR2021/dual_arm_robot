@@ -65,10 +65,6 @@
       can_interface_right="${right_arm_can_interface}"
       namespace="upper_orin" />
 
-    <xacro:left_eef name="${left_eef_name}" parent="link7_left">
-      <origin xyz="0 0.0335 0" rpy="0 0 0"/>
-    </xacro:left_eef>
-
     <xacro:sensor_d435 
       parent="${left_eef_name}_camera_base_link" 
       name="left_camera" 
@@ -76,9 +72,9 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
     </xacro:sensor_d435>
 
-    <xacro:right_eef name="${right_eef_name}" parent="link7_right">
-      <origin xyz="0 0.0335 0" rpy="0 ${M_PI} 0"/>
-    </xacro:right_eef>
+    <xacro:left_eef name="${left_eef_name}" parent="link7_left">
+      <origin xyz="0 0.0335 0" rpy="0 0 0"/>
+    </xacro:left_eef>
 
     <xacro:sensor_d435 
       parent="${right_eef_name}_camera_base_link" 
@@ -86,6 +82,10 @@
       use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
       <origin xyz="0 0 0" rpy="0 0 0"/>
     </xacro:sensor_d435>
+
+    <xacro:right_eef name="${right_eef_name}" parent="link7_right">
+      <origin xyz="0 0.0335 0" rpy="0 ${M_PI} 0"/>
+    </xacro:right_eef>
 
   </xacro:macro>
 </robot>
