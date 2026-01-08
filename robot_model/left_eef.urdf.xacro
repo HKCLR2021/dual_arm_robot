@@ -57,7 +57,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="${M_PI_2} 0 ${M_PI}" />
         <geometry>
-          <mesh filename="package://dual_arm_robot/meshes/visual/KD-ES70A-Z1-24V.STL" scale="0.001 0.001 0.001"/>
+          <mesh filename="package://dual_arm_robot/meshes/visual/KD-ES70A-Z1-24V.STL" />
         </geometry>
         <material name="">
           <color rgba="0.1411 0.7574 0.6290 1"/>
@@ -67,18 +67,19 @@
       <collision>
         <origin xyz="0 0 0" rpy="${M_PI_2} 0 ${M_PI}" />
         <geometry>
-          <mesh filename="package://dual_arm_robot/meshes/collision/KD-ES70A-Z1-24V.STL" scale="0.001 0.001 0.001"/>
+          <mesh filename="package://dual_arm_robot/meshes/collision/KD-ES70A-Z1-24V.STL" />
         </geometry>
         </collision>
     </link>
 
     <joint name="left_tcp_joint" type="fixed">
-      <origin xyz="0 0.12 0" rpy="-${M_PI_2} 0 0" />
+      <origin xyz="0 0.135 0" rpy="-${M_PI_2} 0 0" />
       <parent link="suction_cup_link"/>
       <child link="left_tcp"/>
     </joint>
 
-    <link name="left_tcp" >
+    <link name="left_tcp" />
+    <!-- <link name="left_tcp" >
       <visual>
         <origin rpy="0 0 0" xyz="0 0 -0.0375" />
         <geometry>
@@ -94,7 +95,7 @@
           <cylinder length="0.075" radius="0.007"/>
         </geometry>
       </collision>
-    </link>
+    </link> -->
 
   </xacro:macro>
   

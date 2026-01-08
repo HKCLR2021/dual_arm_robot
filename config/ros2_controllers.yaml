@@ -3,6 +3,11 @@ controller_manager:
   ros__parameters:
     update_rate: 50  # Hz
 
+    # hardware_components_initial_state:
+    #   inactive:
+    #     - left_arm
+    #     - right_arm
+
     left_arm_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
